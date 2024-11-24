@@ -4,12 +4,14 @@ using System.Text;
 
 public class Server
 {
+    private static List<Product> products = new List<Product>();
+
     public static void Main()
     {
         var server = new TcpListener(IPAddress.Any, 9000);
         server.Start();
 
-        Console.WriteLine("Server started. Waiting for connections...");
+        Console.WriteLine("Servidor iniciado");
 
         while (true)
         {
@@ -21,7 +23,7 @@ public class Server
             var bytesRead = stream.Read(buffer, 0, buffer.Length);
             var request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
-            Console.WriteLine($"Received: {request}");
+            Console.WriteLine($"Recebido: {request}");
 
             // Processa a mensagem
             var response = ProcessMessage(request);
@@ -47,17 +49,36 @@ public class Server
             var price = decimal.Parse(parts[3]);
             var quantity = int.Parse(parts[4]);
 
+            var product = new Product
+            {
+                Id = products.Count + 1,
+                Name = productName,
+                Price = price,
+                Quantity = quantity
+            };
+            products.Add(product);
+
             // Simula o cadastro
             Console.WriteLine($"Cadastrando produto: {productName}, Preço: {price}, Quantidade: {quantity}");
             return "OK|Produto cadastrado com sucesso";
         }
         else if (command == "CONSULTAR")
         {
-            // Simula uma consulta de produtos
-            return "OK|Lista de produtos: Notebook, Teclado";
+            // Consulta a lista de produtos
+            if (products.Count == 0)
+            {
+                return "OK|Nenhum produto cadastrado";
+            }
+
+            var productList = new StringBuilder();
+            foreach (var product in products)
+            {
+                productList.Append($"{product.Id}:{product.Name} - {product.Price:C} ({product.Quantity} unidades)\n");
+            }
+
+            return $"OK|{productList}";
         }
 
         return "ERROR|Comando inválido";
     }
 }
-

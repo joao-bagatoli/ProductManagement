@@ -7,10 +7,12 @@ public class Client
     {
         while (true)
         {
+            Console.WriteLine("---Controle de Produtos---");
             Console.WriteLine("1. Cadastrar Produto");
             Console.WriteLine("2. Consultar Produtos");
             Console.WriteLine("3. Sair");
             Console.Write("Escolha uma opção: ");
+
             var choice = Console.ReadLine();
 
             if (choice == "3")
@@ -20,16 +22,24 @@ public class Client
             string message;
             if (choice == "1")
             {
-                Console.Write("Nome do produto: ");
+                Console.Write("\nNome do produto: ");
                 var name = Console.ReadLine();
 
                 Console.Write("Preço do produto: ");
-                var price = Console.ReadLine();
+                if (!decimal.TryParse(Console.ReadLine(), out var price))
+                {
+                    Console.WriteLine("Preço inválido. Tente novamente.");
+                    continue;
+                }
 
                 Console.Write("Quantidade: ");
-                var quantity = Console.ReadLine();
+                if (!int.TryParse(Console.ReadLine(), out var quantity))
+                {
+                    Console.WriteLine("Quantidade inválida. Tente novamente.");
+                    continue;
+                }
 
-                message = $"CADASTRAR|{name.Length}|{name}|{price}|{quantity}";
+                message = $"CADASTRAR|0|{name}|{price}|{quantity}";
             }
             else if (choice == "2")
             {
@@ -41,23 +51,31 @@ public class Client
                 continue;
             }
 
-            // Envia a mensagem ao servidor
-            var client = new TcpClient("127.0.0.1", 9000);
-            var stream = client.GetStream();
+            var response = SendMessageToServer(message);
+            Console.WriteLine($"Resposta do servidor: {response}\n");
+        }
+    }
 
-            var messageBytes = Encoding.UTF8.GetBytes(message);
-            stream.Write(messageBytes, 0, messageBytes.Length);
+    private static string SendMessageToServer(string message)
+    {
+        try
+        {
+            using (var client = new TcpClient("127.0.0.1", 9000))
+            using (var stream = client.GetStream())
+            {
+                // Envia a mensagem ao servidor
+                var messageBytes = Encoding.UTF8.GetBytes(message);
+                stream.Write(messageBytes, 0, messageBytes.Length);
 
-            // Recebe a resposta
-            var buffer = new byte[1024];
-            var bytesRead = stream.Read(buffer, 0, buffer.Length);
-            var response = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-
-            Console.WriteLine($"Resposta do servidor: {response}");
-
-            // Fecha o cliente
-            client.Close();
+                // Recebe a resposta do servidor
+                var buffer = new byte[1024];
+                var bytesRead = stream.Read(buffer, 0, buffer.Length);
+                return Encoding.UTF8.GetString(buffer, 0, bytesRead);
+            }
+        }
+        catch (Exception ex)
+        {
+            return $"Erro ao conectar ao servidor: {ex.Message}";
         }
     }
 }
-
