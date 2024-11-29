@@ -40,7 +40,7 @@ Mensagem enviada pelo cliente:
 OK|Produto cadastrado com sucesso
 
 - **Lista de produtos cadastrados**
-OK|<ID>:<Nome> - <Preço> (<Quantidade> unidades)
+`OK|<ID>:<Nome> - <Preço> (<Quantidade> unidades)`
 
 - **Nenhum produto cadastrado**
 OK|Nenhum produto cadastrado
