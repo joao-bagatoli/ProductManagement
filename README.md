@@ -27,12 +27,11 @@ O servidor processa as solicitações do cliente e retorna as respostas conforme
 
 - **Cadastrar Produto**  
 Mensagem enviada pelo cliente:
-**CADASTRAR|0|<Nome do Produto>|<Preço>|<Quantidade>**
-Exemplo: `CADASTRAR|0|Notebook|3500.50|10`
+`CADASTRAR|0|<Nome do Produto>|<Preço>|<Quantidade>`
 
 - **Consultar Produtos**  
 Mensagem enviada pelo cliente:
-**CONSULTAR|0|**
+`CONSULTAR|0|`
 
 ### Respostas do Servidor
 
