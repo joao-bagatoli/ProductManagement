@@ -37,17 +37,16 @@ Mensagem enviada pelo cliente:
 ### Respostas do Servidor
 
 - **Sucesso no cadastro**
-OK|Produto cadastrado com sucesso
+`OK|Produto cadastrado com sucesso`
 
 - **Lista de produtos cadastrados**
 `OK|<ID>:<Nome> - <Preço> (<Quantidade> unidades)`
 
 - **Nenhum produto cadastrado**
-OK|Nenhum produto cadastrado
+`OK|Nenhum produto cadastrado`
 
 - **Comando inválido**
-ERROR|Comando inválido
-
+`ERROR|Comando inválido`
 
 ## Como Reproduzir o Software
 
