@@ -5,7 +5,7 @@
 - Lucca dos Santos
 
 ## Arquitetura
-Client-Server  
+**Client-Server**  
 Este software utiliza a arquitetura cliente-servidor, onde o cliente envia solicitações para o servidor, que processa as requisições e retorna respostas.
 
 ## Tecnologias Utilizadas
